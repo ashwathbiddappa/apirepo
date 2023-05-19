@@ -1,0 +1,72 @@
+have created random.txt to create test.txt and script.sh is my code
+here am using python webserver to run my container 
+here app.py contains flash framework to handle http request 
+once docker file is return 
+then need to run docker build -t image name .
+here our docker file app.py random.sh and script.sh need to be in a same directory where we are running docker build 
+once docker build is done need  to add ecr repo and need to push the image to ecr repo 
+docker push ecr-repo-url
+
+from ther our terraform script is pulling the image and running it 
+to run terraform script our command will 
+terraform init
+terraform fmt
+terrafrom plan
+terraform apply 
+
+finally to to test deployed our application we can do 
+ http://ipaddress:8080/script.sh?arg=endpoint
+
+
+and for contionuos deployment we can jenkins pipeline code as follows 
+
+pipeline {
+  agent any
+  
+  environment {
+    AWS_DEFAULT_REGION = 'us-west-2'
+    AWS_ACCESS_KEY_ID = credentials('aws-access-key')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+    ECR_REPO = 'my-ecr-repo'
+  }
+  
+  stages {
+    stage('Checkout') {
+      steps {
+        git git url
+      }
+    }
+    
+    
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t iamgename .'
+      }
+    }
+    
+    stage('ECR Login') {
+      steps {
+        
+        sh ecr login details
+      }
+    }
+    
+    stage('ECR Push') {
+      steps {
+      
+        sh 'docker push url
+      }
+    }
+    
+    stage('Terraform Init') {
+      steps {
+        sh 'terraform init'
+      }
+    }
+    
+    stage('Terraform Apply') {
+      steps {
+        // Apply Terraform plan
+        sh 'terraform apply -auto-approve 
+      }
+    }
