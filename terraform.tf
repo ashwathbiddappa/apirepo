@@ -8,7 +8,7 @@ resource "aws_instance" "instance" {
   ami           = "ami"
   instance_type = "instance-type"
   key_name      = "key-pair"
-
+vpc_security_group_ids = aws_security_group.sg.id
   key_name = "key-name"
 
   # Use user_data to run commands on instance launch
@@ -30,4 +30,17 @@ resourec "aws_resource_key" "keypair" {
 
 key_name =" "
 public_key=" "
+}
+
+
+resource "aws_security_group" "port" {
+  name        = "sg"
+  description = "Security group for Docker container"
+  
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
